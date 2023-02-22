@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.shape.Circle?>
+<?import org.controlsfx.dialog.FontSelectorDialog.FontPanel?>
+<?import javafx.scene.shape.Line?>
+<?import com.sun.javafx.scene.control.ContextMenuContent.ArrowMenuItem?>
+<GridPane
+
+          xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="com.example.game.FrameController"
+          prefHeight="600.0" prefWidth="1000.0"
+          styleClass="grid">
+
+    <!-- Игровая область -->
+    <Rectangle GridPane.columnIndex="1" GridPane.rowIndex="1"
+               height="500" width="100"
+               styleClass="player-zone"/>
+    <Button GridPane.columnIndex="1" GridPane.rowIndex="1"
+            prefHeight="100" prefWidth="100"
+            styleClass="player"/>
+    <Pane xmlns="http://javafx.com/javafx/11.0.2"
+          GridPane.columnIndex="2" GridPane.rowIndex="1"
+          prefHeight="500" prefWidth="600"
+          styleClass="with-borders"
+          fx:id="gamePane"  >
+
+
+
+        <!-- Большая мишень -->
+        <Line startX="425.0" endX="425.0" endY="500.0"
+              opacity="0.7"
+              stroke="black" strokeLineCap="BUTT" strokeWidth="4.0"/>
+        <Circle fx:id="bigTarget" layoutX="425.0" layoutY="250.0" radius="40.0"
+                styleClass="targets"/>
+        <!-- Маленькая мишень -->
+        <Line startX="550.0" endX="550.0" endY="500.0"
+              opacity="0.7"
+              stroke="black" strokeLineCap="BUTT" strokeWidth="4.0"/>
+        <Circle fx:id="smallTarget" layoutX="550.0" layoutY="250.0" radius="20.0"
+                styleClass="targets"/>
+
+    </Pane>
+
+    <!-- Область для кнопок -->
+    <GridPane   GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.columnSpan="2"
+                xmlns:fx="http://javafx.com/fxml/1"
+                styleClass="with-borders, with-padding, with-gaps" >
+        <Button GridPane.columnIndex="1" GridPane.rowIndex="1"
+                styleClass="btn"
+                text="Начало игры"
+                onMouseClicked="#onGameStart"
+                />
+        <Button GridPane.columnIndex="2" GridPane.rowIndex="1"
+                styleClass="btn"
+                text="Остановить игру"
+                onMouseClicked="#onExit"/>
+        <Button GridPane.columnIndex="3" GridPane.rowIndex="1"
+                styleClass="btn"
+                text="Пауза(доп)"
+                onMouseClicked="#onPause"/>
+        <Button GridPane.columnIndex="4" GridPane.rowIndex="1"
+                styleClass="btn"
+                text="Выстрел"
+                onMouseClicked="#onShoot"/>
+    </GridPane>
+
+    <!-- Область для текста -->
+    <GridPane  GridPane.columnIndex="3" GridPane.rowIndex="1" styleClass="with-padding">
+        <Label GridPane.columnIndex="1" GridPane.rowIndex="1"
+               styleClass="text-label"
+               text="Количество очков!" />
+        <Text GridPane.columnIndex="1" GridPane.rowIndex="2"
+              styleClass="text"
+              fx:id="textShot"
+              text="0"/>
+        <Label GridPane.columnIndex="1" GridPane.rowIndex="3"
+               styleClass="text-label"
+               text="Количество выстрелов!"/>
+        <Text  GridPane.columnIndex="1" GridPane.rowIndex="4"
+               styleClass="text"
+               fx:id="textTries"
+               text="0"/>
+    </GridPane>
+
+
+
+
+</GridPane>
+
