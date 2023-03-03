@@ -15,15 +15,15 @@ public class FrameController {
     private Pane gamePane;
     private boolean isGameRunning = false;
 
-    private TargetsController targetsControl;
-    private ShootingController shootingControl;
-    private InfoController infoController;
+    private TargetsControl targetsControl;
+    private ShootingControl shootingControl;
+    private InfoControl infoControl;
 
     @FXML
     public void initialize() {
-        infoController = new InfoController(textTries, textShot);
-        shootingControl = new ShootingController(infoController, gamePane,bigTarget,smallTarget);
-        targetsControl = new TargetsController(smallTarget, bigTarget);
+        infoControl = new InfoControl(textTries, textShot);
+        shootingControl = new ShootingControl(infoControl, gamePane,bigTarget,smallTarget);
+        targetsControl = new TargetsControl(smallTarget, bigTarget);
     }
 
     public void onGameStart(MouseEvent mouseEvent) {
@@ -32,20 +32,23 @@ public class FrameController {
     }
 
     public void onPause(MouseEvent mouseEvent) {
-        isGameRunning = false;
+        isGameRunning = !isGameRunning;
         targetsControl.Pause();
+        shootingControl.Pause();
     }
 
     public void onExit(MouseEvent mouseEvent) {
         isGameRunning = false;
-        infoController.Reset();
+        infoControl.Reset();
         targetsControl.Stop();
+        shootingControl.Pause();
+        shootingControl.Reset();
     }
 
     public void onShoot(MouseEvent mouseEvent) {
         if (!isGameRunning) return;
         if (shootingControl.TryShooting()) {
-            infoController.incTries();
+            infoControl.incTries();
         }
     }
 }

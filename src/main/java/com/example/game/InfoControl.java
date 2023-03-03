@@ -3,12 +3,12 @@ package com.example.game;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
-public class InfoController {
+public class InfoControl {
     @FXML
     private final Text textTries, textShots;
 
 
-    public InfoController(Text textTries, Text textShots) {
+    public InfoControl(Text textTries, Text textShots) {
         this.textTries = textTries;
         this.textShots = textShots;
     }

@@ -1,17 +1,19 @@
 package com.example.game;
 
+import javafx.application.Platform;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 
-public class ShootingController {
+public class ShootingControl {
 
     private final Arrow a;
     private final Circle sml, big;
     private volatile boolean isFlying = false;
-    private final InfoController infoController;
+    private final InfoControl infoControl;
+    private volatile boolean isRunning = true;
 
-    public ShootingController( InfoController infoController,Pane rootPane, Circle small, Circle big) {
-        this.infoController = infoController;
+    public ShootingControl(InfoControl infoControl, Pane rootPane, Circle small, Circle big) {
+        this.infoControl = infoControl;
         a = new Arrow(25, 250, 100);
         this.big = big;
         sml = small;
@@ -21,20 +23,25 @@ public class ShootingController {
     public boolean TryShooting() {
         if (isFlying) return false;
         isFlying = true;
-        Shoot(100);
+        Shoot(10);
         return true;
+    }
+
+    public void Pause()  {
+        if (!isRunning) isRunning = true;
+        else isRunning = false;
     }
 
     public int CheckCollision() {
 
         if (Contains(sml, a.getLayoutX(), a.getLayoutY())) {
-            infoController.incShots();
+            infoControl.incShots();
             Reset();
             return 1;
         }
         if (Contains(big, a.getLayoutX(), a.getLayoutY())) {
-            infoController.incShots();
-            infoController.incShots();
+            infoControl.incShots();
+            infoControl.incShots();
             Reset();
             return 1;
         }
@@ -47,24 +54,33 @@ public class ShootingController {
         return 0;
     }
 
-    private void Reset() {
-        isFlying = false;
-        a.setLayoutX(0);
+    public void Reset() {
+        Platform.runLater(()-> {
+            isFlying = false;
+            isRunning = true;
+            a.setLayoutX(0);
+        });
+
     }
 
 
-    private boolean Contains(Circle c, double x, double y) {
-        return (Math.sqrt(Math.pow((x + 130 -c.getLayoutX()), 2) + Math.pow((y + 250 -c.getLayoutY()), 2)) < c.getRadius()) ;
-    }
+
 
     private void Shoot(int ticks) {
         new Thread(
                 ()->
                 {
+
+
                         int moving = 10;
                         while (CheckCollision() == 0 )
                         {
-                            a.setLayoutX(a.getLayoutX() + moving);
+
+                            if (!isRunning)
+                                continue;
+                            Platform.runLater(()-> {
+                                a.setLayoutX(a.getLayoutX() + moving);
+                            });
 
                             try {
                                 Thread.sleep(ticks);
@@ -74,9 +90,16 @@ public class ShootingController {
                         }
 
 
+
                 }
         ).start();
     }
 
+    private boolean Contains(Circle c, double x, double y) {
+        return (Math.sqrt(Math.pow((x + 130 -c.getLayoutX()), 2) + Math.pow((y + 250 -c.getLayoutY()), 2)) < c.getRadius()) ;
+    }
 
 }
+
+
+
